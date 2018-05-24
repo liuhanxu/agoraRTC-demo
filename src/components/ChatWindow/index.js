@@ -41,7 +41,7 @@ class ChatWindow extends Component {
   }
 
   containsItem (arr, id) {
-    return _.findIndex(arr, ['id', id])>=0;
+    return _.findIndex(arr, ['id', id]) >= 0;
   }
 
   getDevices () {
@@ -350,7 +350,9 @@ class ChatWindow extends Component {
         <div>{this.state.message}</div>
 
         <div className={styles.videoGroup}>
-          <div id="agora_local" className={styles.localItem} ref={r => this.localVideoRef = r}></div>
+          {
+            this.state.host && <div id="agora_local" className={styles.localItem} ref={r => this.localVideoRef = r}></div>
+          }
           {_.map(this.state.videoViews, (v, i) => {
             return v.value;
           })}
