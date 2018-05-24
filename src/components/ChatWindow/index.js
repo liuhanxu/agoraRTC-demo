@@ -24,7 +24,7 @@ class ChatWindow extends Component {
       isJoin: false,
       isPublish: false,
       message: '',
-      videoViews:[],
+      videoViews: [],
     };
     this.apiKey = '983f7f85aa654899a3ba264d12ebb9ed';
     this.audioSourceOptions = [];
@@ -41,10 +41,7 @@ class ChatWindow extends Component {
   }
 
   containsItem (arr, id) {
-    arr.forEach((v, i) => {
-      if (v.id === id) return true;
-    });
-    return false;
+    return _.findIndex(arr, ['id', id])>=0;
   }
 
   getDevices () {
@@ -182,7 +179,8 @@ class ChatWindow extends Component {
       if (!that.containsItem(views, stream.getId())) {
         views.push({
           id: stream.getId(),
-          value: <div key={`key-${stream.getId()}`} id={`agora_remote${stream.getId()}`} className={styles.videoItem}></div>,
+          value: <div key={`key-${stream.getId()}`} id={`agora_remote${stream.getId()}`}
+                      className={styles.videoItem}></div>,
         });
         that.setState({videoViews: views});
       }
@@ -192,10 +190,9 @@ class ChatWindow extends Component {
     that.client.on('stream-removed', function (evt) {
       let stream = evt.stream;
       stream.stop();
-      $('#agora_remote' + stream.getId()).remove();
       let views = that.state.videoViews;
       if (that.containsItem(views, stream.getId())) {
-        _.remove(views, n => stream.getId() === n);
+        _.remove(views, n => stream.getId() === n.id);
         that.setState({videoViews: views});
       }
       console.log('Remote stream is removed ' + stream.getId());
@@ -207,8 +204,9 @@ class ChatWindow extends Component {
         stream.stop();
         let views = that.state.videoViews;
         if (that.containsItem(views, stream.getId())) {
-          _.remove(views, n => stream.getId() === n);
+          _.remove(views, n => stream.getId() === n.id);
           that.setState({videoViews: views});
+          console.log(that.state)
         }
         console.log(evt.uid + ' leaved from this channel');
         that.setMessage(evt.uid + ' leaved from this channel');
@@ -224,7 +222,6 @@ class ChatWindow extends Component {
     this.client.leave(
       function () {
         console.log('Leavel channel successfully');
-        // that.localVideoRef.getDOMNode().removeAll();
       },
       function (err) {
         console.log('Leave channel failed:' + err);
@@ -355,7 +352,6 @@ class ChatWindow extends Component {
         <div className={styles.videoGroup}>
           <div id="agora_local" className={styles.localItem} ref={r => this.localVideoRef = r}></div>
           {_.map(this.state.videoViews, (v, i) => {
-            console.log(v);
             return v.value;
           })}
         </div>
