@@ -24,13 +24,13 @@ class ChatWindow extends Component {
       isJoin: false,
       isPublish: false,
       message: '',
+      videoViews:[],
     };
     this.apiKey = '983f7f85aa654899a3ba264d12ebb9ed';
     this.audioSourceOptions = [];
     this.videoSourceOptions = [];
     this.client = null;
     this.localStream = null;
-    this.videoViews = [];
     this.setMessage = this.setMessage.bind(this);
     this.join = this.join.bind(this);
     this.leave = this.leave.bind(this);
@@ -150,7 +150,7 @@ class ChatWindow extends Component {
     );
 
     let channelKey = '';
-    this.client.on('error', function (err) {
+    that.client.on('error', function (err) {
       console.log('Got error msg:', err.reason);
       if (err.reason === 'DYNAMIC_KEY_TIMEOUT') {
         that.client.renewChannelKey(
@@ -177,12 +177,12 @@ class ChatWindow extends Component {
     that.client.on('stream-subscribed', function (evt) {
       let stream = evt.stream;
       console.log('Subscribe remote stream successfully: ' + stream.getId());
-      let views = this.state.videoViews;
-      if (!this.containsItem(views, stream.getId())) {
+      let views = that.state.videoViews;
+      console.log(views)
+      if (!that.containsItem(views, stream.getId())) {
         views.push({
           id: stream.getId(),
-          value: <div key={`key-${stream.getId()}`} id={`agora_remote${stream.getId()}`} className={styles.videoItem}>
-            1</div>,
+          value: <div key={`key-${stream.getId()}`} id={`agora_remote${stream.getId()}`} className={styles.videoItem}></div>,
         });
         that.setState({videoViews: views});
       }
@@ -193,8 +193,8 @@ class ChatWindow extends Component {
       let stream = evt.stream;
       stream.stop();
       $('#agora_remote' + stream.getId()).remove();
-      let views = this.state.videoViews;
-      if (this.containsItem(views, stream.getId())) {
+      let views = that.state.videoViews;
+      if (that.containsItem(views, stream.getId())) {
         _.remove(views, n => stream.getId() === n);
         that.setState({videoViews: views});
       }
@@ -205,7 +205,7 @@ class ChatWindow extends Component {
       let stream = evt.stream;
       if (stream) {
         stream.stop();
-        let views = this.state.videoViews;
+        let views = that.state.videoViews;
         if (that.containsItem(views, stream.getId())) {
           _.remove(views, n => stream.getId() === n);
           that.setState({videoViews: views});
@@ -228,7 +228,7 @@ class ChatWindow extends Component {
       },
       function (err) {
         console.log('Leave channel failed:' + err);
-        this.setState({isJoin: true});
+        that.setState({isJoin: true});
         that.setMessage('Leave channel failed:' + JSON.stringify(err));
       }
     );
@@ -356,7 +356,7 @@ class ChatWindow extends Component {
           <div id="agora_local" className={styles.localItem} ref={r => this.localVideoRef = r}></div>
           {_.map(this.state.videoViews, (v, i) => {
             console.log(v);
-            return v;
+            return v.value;
           })}
         </div>
       </div>
