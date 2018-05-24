@@ -1,0 +1,143 @@
+.chatWindowContainer {
+  position: relative;
+  width: 100%;
+  background: #dddddd;
+  border-radius: 5px;
+
+  .selectGroup {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 5px;
+
+    .sourceSelect {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      width: 100%;
+
+      span {
+        margin-right: 10px;
+        font-size: 14px;
+      }
+
+      .selectBtn {
+        width: 100%;
+        height: 36px;
+      }
+    }
+  }
+
+  .editBoxGroup {
+    position: relative;
+    display: flex;
+    padding: 10px 5px 0 5px;
+
+    span {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+
+    input {
+      background: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .keyBox {
+      flex: 1;
+      input {
+        width: 50%;
+      }
+    }
+
+    .channelBox {
+      flex: 1;
+      input {
+        width: 50%;
+      }
+    }
+
+    .hostCheckBox {
+      flex: 1;
+      input[type='checkbox'] {
+        display: none;
+      }
+      span + input[type='checkbox'] {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        vertical-align: middle;
+
+        &:checked {
+          background: #008cba;
+          border-color: #008cba;
+        }
+      }
+    }
+  }
+
+  .btnGroup {
+    display: flex;
+    align-items: center;
+    padding: 10px 5px 10px 5px;
+
+    .blueBtn {
+      flex: 1;
+      margin-left: 1%;
+      margin-right: 1%;
+      background-color: #008cba;
+      border: none;
+      border-radius: 3px;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      box-shadow: 0 3px #ddd;
+
+      &:active {
+        background-color: #008cba;
+        box-shadow: 0 1px #ddd;
+        transform: translateY(2px);
+      }
+      &:disabled {
+        background-color: #999;
+      }
+    }
+  }
+
+  .videoGroup{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 800px;
+    background: cadetblue;
+    border-radius: 10px;
+
+    .videoItem{
+      display: inline-block;
+      background: #008cba;
+      width: 30%;
+      height: 200px;
+      margin: 1%;
+
+    }
+
+    .localItem{
+      display: inline-block;
+      background: cadetblue;
+      width: 30%;
+      height: 200px;
+      margin: 1%;
+
+    }
+  }
+
+
+}
